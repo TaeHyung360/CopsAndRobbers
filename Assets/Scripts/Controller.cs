@@ -48,12 +48,35 @@ public class Controller : MonoBehaviour
 
     public void InitAdjacencyLists()
     {
-        //Matriz de adyacencia
+        //Matriz de adyacencia Constants.NumTiles es el tamaño que a su vez es igual que 64
+
         int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
 
         //TODO: Inicializar matriz a 0's
 
+        for (int i = 0; i < Constants.TilesPerRow; i++){
+
+            for (int j = 0; j < Constants.TilesPerRow; j++){
+
+                matriu[i, j] = 0;
+
+            }
+
+        }
+
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
+
+        for (int i = 0; i < Constants.TilesPerRow; i++)
+        {
+
+            for (int j = 0; j < Constants.TilesPerRow; j++)
+            {
+
+
+
+            }
+
+        }
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
 
@@ -99,7 +122,7 @@ public class Controller : MonoBehaviour
                     cops[clickedCop].GetComponent<CopMove>().MoveToTile(tiles[clickedTile]);
                     cops[clickedCop].GetComponent<CopMove>().currentTile=tiles[clickedTile].numTile;
                     tiles[clickedTile].current = true;   
-                    
+                        
                     state = Constants.TileSelected;
                 }                
                 break;
