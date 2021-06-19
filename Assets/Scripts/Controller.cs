@@ -253,13 +253,72 @@ public class Controller : MonoBehaviour
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
 
+        //Indices que por todos los policias
+        List<int> indexDePolicias = new List<int>();
+
+        foreach(GameObject poliAux in cops)
+        {
+            indexDePolicias.Add(poliAux.GetComponent<CopMove>().currentTile);
+        }
+
+        foreach(int index in tiles[indexcurrentTile].adjacency)
+        {
+            tiles[index].parent = tiles[indexcurrentTile];
+
+            nodes.Enqueue(tiles[index]);
+        }
+
         //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
         //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        for (int i = 0; i < Constants.NumTiles; i++)
         {
             tiles[i].selectable = true;
         }
 
+        while(nodes.Count > 0)
+        {
+
+            Tile auxNodo = nodes.Dequeue();
+
+            if (!auxNodo.visited)
+            {
+                //Esto es para que no recorra la casilla del poli
+                if (indexDePolicias.Contains(auxNodo.numTile))
+                {
+                    auxNodo.visited = true;
+
+                    auxNodo.distance = auxNodo.parent.distance + 1;
+                }
+                else
+                {
+                    auxNodo.visited = true;
+
+                    auxNodo.distance = auxNodo.parent.distance + 1;
+
+                    foreach(int index in auxNodo.adjacency)
+                    {
+
+                        //No se puede ir a donde a las casillas que estan ocupadas por los polis y inculo para a su propia casilla.
+
+                        if (!tiles[index].visited)
+                        {
+                            tiles[index].parent = auxNodo;
+                            nodes.Enqueue(tiles[index]);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach(Tile til in tiles)
+        {
+            //No se puede ir a donde esten los polis, esto incluye a  su propia casilla.
+            if(til.distance <= 2 && !indexDePolicias.Contains(til.numTile))
+            {
+                til.selectable = true;
+            }
+        }
 
     }
     
