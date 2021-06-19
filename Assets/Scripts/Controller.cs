@@ -54,9 +54,9 @@ public class Controller : MonoBehaviour
 
         //TODO: Inicializar matriz a 0's
 
-        for (int i = 0; i < Constants.TilesPerRow; i++){
+        for (int i = 0; i < Constants.NumTiles; i++){
 
-            for (int j = 0; j < Constants.TilesPerRow; j++){
+            for (int j = 0; j < Constants.NumTiles; j++){
 
                 matriu[i, j] = 0;
 
@@ -66,19 +66,47 @@ public class Controller : MonoBehaviour
 
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
 
-        for (int i = 0; i < Constants.TilesPerRow; i++)
+        for (int i = 0; i < Constants.NumTiles; i++)
         {
-
-            for (int j = 0; j < Constants.TilesPerRow; j++)
+            //ariba
+            if (i>7)
             {
+                matriu[i,i - 8] = 1;
 
+            }
+            //izquierda
+            else if (i%8 != 0){
 
+                matriu[i, i - 1] = 1;
+
+            }
+            //derecha
+            else if (((i+1)%8) != 0){
+
+                matriu[i, i + 1] = 1;
+
+            }
+            //abajo
+            else if (i <56){
+
+                matriu[i, i + 8] = 1;
 
             }
 
         }
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
+
+        for (int i = 0; i < Constants.NumTiles; i++)
+        {
+            for (int j = 0; j < Constants.NumTiles; j++)
+            {
+                if (matriu[i, j] == 1)
+                {
+                    tiles[i].adjacency.Add(j);
+                }
+            }
+        }
 
     }
 
