@@ -75,19 +75,19 @@ public class Controller : MonoBehaviour
 
             }
             //izquierda
-            else if (i%8 != 0){
+            if (i%8 != 0){
 
                 matriu[i, i - 1] = 1;
 
             }
             //derecha
-            else if (((i+1)%8) != 0){
+            if (((i+1)%8) != 0){
 
                 matriu[i, i + 1] = 1;
 
             }
             //abajo
-            else if (i <56){
+            if (i <56){
 
                 matriu[i, i + 8] = 1;
 
@@ -249,6 +249,7 @@ public class Controller : MonoBehaviour
 
         //La ponemos rosa porque acabamos de hacer un reset
         tiles[indexcurrentTile].current = true;
+        tiles[indexcurrentTile].visited = true;
 
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
@@ -270,10 +271,6 @@ public class Controller : MonoBehaviour
 
         //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
         //Tendrás que cambiar este código por el BFS
-        for (int i = 0; i < Constants.NumTiles; i++)
-        {
-            tiles[i].selectable = true;
-        }
 
         while(nodes.Count > 0)
         {
@@ -282,20 +279,14 @@ public class Controller : MonoBehaviour
 
             if (!auxNodo.visited)
             {
+                auxNodo.visited = true;
+
+                auxNodo.distance = auxNodo.parent.distance + 1;
+
                 //Esto es para que no recorra la casilla del poli
-                if (indexDePolicias.Contains(auxNodo.numTile))
+                if (!indexDePolicias.Contains(auxNodo.numTile))
                 {
-                    auxNodo.visited = true;
-
-                    auxNodo.distance = auxNodo.parent.distance + 1;
-                }
-                else
-                {
-                    auxNodo.visited = true;
-
-                    auxNodo.distance = auxNodo.parent.distance + 1;
-
-                    foreach(int index in auxNodo.adjacency)
+                    foreach (int index in auxNodo.adjacency)
                     {
 
                         //No se puede ir a donde a las casillas que estan ocupadas por los polis y inculo para a su propia casilla.
@@ -308,6 +299,7 @@ public class Controller : MonoBehaviour
                         }
                     }
                 }
+                
             }
         }
 
@@ -321,13 +313,5 @@ public class Controller : MonoBehaviour
         }
 
     }
-    
-   
-    
 
-    
-
-   
-
-       
 }
